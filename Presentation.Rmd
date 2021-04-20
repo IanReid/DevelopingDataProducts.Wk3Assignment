@@ -1,0 +1,44 @@
+---
+title: "R Markdown Presentation & Plotly"
+author: "Ian Reid"
+date: "19/04/2021"
+output: 
+  ioslides_presentation: 
+    smaller: yes
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r load_data, echo=FALSE, message=FALSE}
+library(readr)
+library(dplyr)
+cases <- read_tsv("ActiveCovid19Cases.tsv")
+```
+
+***
+
+```{r plotly, echo=FALSE, message=FALSE, fig.align='center'}
+library(plotly)
+x <- 
+y <- 
+p <- plot_ly(data=cases, x= ~date, y= ~BritishColumbia, name="British Columbia", type="scatter", mode="lines") %>%
+  add_lines(y = ~Prairies, name = "Prairies") %>%
+  add_lines(y = ~Ontario, name = "Ontario") %>%
+  add_lines(y = ~Quebec, name = "Quebec") %>%
+  add_lines(y = ~Atlantic, name = "Atlantic") %>%
+  add_lines( y = ~Arctic, name = "Arctic") %>%
+  add_lines(y= ~Canada, name="Canada", line= list(width=3, dash="dot")) %>%
+  layout(xaxis=list(title = "Date"), 
+         yaxis=list(title = "Active cases per 100,000 persons"), 
+         title="Covid-19 in Canada",
+         legend = list(x=0.1, y=1)) %>%
+  add_text(x=parse_date("2020-04-25"), y=110, text = "1st wave", showlegend=FALSE) %>%
+  add_text(x=parse_date("2020-12-20"), y=290, text = "2nd wave", showlegend=FALSE) %>%
+  add_text(x=parse_date("2021-04-10"), y=280, text = "3rd wave", showlegend=FALSE)
+p
+```
+Data from Public Health Agency of Canada  
+Created by Ian Reid April 19, 2021
